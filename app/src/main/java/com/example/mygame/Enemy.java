@@ -3,9 +3,8 @@ package com.example.mygame;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
-public class Sprite {
+public class Enemy  {
     private Bitmap bitmap;// Картинка с анимационной последовательностью
     private Rect sourceRect;// Прямоугольная область в bitmap, которую нужно нарисовать
     private int frameNr;// Число кадров в анимации
@@ -13,20 +12,13 @@ public class Sprite {
     private long frameTicker;// время обновления последнего кадра
     private int framePeriod;// сколько миллисекунд должно пройти перед сменой кадра (1000/fps)
 
-     int spriteWidth;// ширина спрайта (одного кадра)
-     int spriteHeight;// высота спрайта
+    int spriteWidth;// ширина спрайта (одного кадра)
+    int spriteHeight;// высота спрайта
 
     float x;// X координата спрайта (верхний левый угол картинки)
     float y;// Y координата спрайта (верхний левый угол картинки)
-
-    private float vX = 0;
-    private float vY = 0;
-    private float velocityX = 12;
-    private float velocityY = 12;
-    float corY, corX;
-    int mod; int a =0;
-
-    public Sprite(Bitmap bitmap, float x, float y, int width, int height, int fps, int frameCount){
+    int mod = 0;
+    public Enemy(Bitmap bitmap, float x, float y, int width, int height, int fps, int frameCount){
         this.bitmap= bitmap;
         this.x= x;
         this.y= y;
@@ -34,19 +26,22 @@ public class Sprite {
         currentFrame=0;
         frameNr= frameCount;
         spriteWidth= bitmap.getWidth()/ frameCount;
-        spriteHeight= bitmap.getHeight()/7;
+        spriteHeight= bitmap.getHeight()/5;
         sourceRect=new Rect(0,0, spriteWidth, spriteHeight);
         framePeriod=1000/ fps;
         frameTicker= 0l;
-        mod =0;
-    }
 
-    public void update(long gameTime){
+    }
+    int count = 0;
+    public void updatee(long gameTime){
         if(gameTime> frameTicker+ framePeriod){
             frameTicker = gameTime;
             currentFrame++;
             if(currentFrame>= frameNr){
-                currentFrame=0;
+                currentFrame=0; count++;
+                if(count==6){
+                    mod =1; count = 0;
+                } else if(count ==1 && mod ==1) mod = 0;
             }
         }
 // Определяем область на рисунке с раскадровкой, соответствующую текущему кадру
@@ -76,61 +71,11 @@ public class Sprite {
             this.sourceRect.right= this.sourceRect.left+ spriteWidth;
             this.sourceRect.bottom = spriteHeight*(1+mod);
             this.sourceRect.top = spriteHeight*mod;
-        }else if(mod == 5){
-            this.sourceRect.left= currentFrame* spriteWidth ;
-            this.sourceRect.right= this.sourceRect.left+ spriteWidth;
-            this.sourceRect.bottom = spriteHeight*(1+mod);
-            this.sourceRect.top = spriteHeight*mod;
-        }else if(mod == 6){
-            this.sourceRect.left= currentFrame* spriteWidth ;
-            this.sourceRect.right= this.sourceRect.left+ spriteWidth;
-            this.sourceRect.bottom = spriteHeight*(1+mod);
-            this.sourceRect.top = spriteHeight*mod;
         }
-    }
-
-    void setVec(MotionEvent event){
-        corX = event.getX();
-        corY = event.getY();
-        if(corX>=x) vX = 1; else vX = -1;
-        if(corY>=y) vY = 1; else vY = -1;
-        corX = corX +vX*(spriteWidth/2);
-        corY = corY +vY*(spriteHeight/2);
 
 
     }
-    void moveto(){
-        if(corY>=y&&corY<=y+spriteHeight){
-            if( corX>=x&&corX<=x+spriteWidth){
-                mod = a;
-            }else {  moveX(); }
-        } else { moveY();}
-
-    }
-    void moveX(){
-        if(corX>x) mod = 1; else mod = 2;
-        x += vX*velocityX;
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    void moveY(){
-        if(corY>y) mod = 3; else mod = 4;
-        y += vY*velocityY;
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    void stop(){
-        corY = y;
-        corX = x;
-    }
-    public void draw(Canvas canvas){
-
+    public void drawe(Canvas canvas){
         Rect destRect=new Rect((int)x, (int)y, (int)x+ spriteWidth, (int)y+ spriteHeight);
         canvas.drawBitmap(bitmap, sourceRect, destRect,null);
 
