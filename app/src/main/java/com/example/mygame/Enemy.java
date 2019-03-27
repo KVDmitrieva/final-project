@@ -8,7 +8,7 @@ public class Enemy  {
     private Bitmap bitmap;// Картинка с анимационной последовательностью
     private Rect sourceRect;// Прямоугольная область в bitmap, которую нужно нарисовать
     private int frameNr;// Число кадров в анимации
-    private int currentFrame;// Текущий кадр
+    int currentFrame;// Текущий кадр
     private long frameTicker;// время обновления последнего кадра
     private int framePeriod;// сколько миллисекунд должно пройти перед сменой кадра (1000/fps)
 
@@ -18,7 +18,8 @@ public class Enemy  {
     float x;// X координата спрайта (верхний левый угол картинки)
     float y;// Y координата спрайта (верхний левый угол картинки)
     int mod = 0;
-    public Enemy(Bitmap bitmap, float x, float y, int width, int height, int fps, int frameCount){
+    int health, def, attack, crit, speedAttack;
+    public Enemy(Bitmap bitmap, float x, float y, int width, int height, int fps, int frameCount,int health, int def, int attack, int crit, int speedAttack){
         this.bitmap= bitmap;
         this.x= x;
         this.y= y;
@@ -31,6 +32,12 @@ public class Enemy  {
         framePeriod=1000/ fps;
         frameTicker= 0l;
 
+
+        this.health = health;
+        this.def = def;
+        this.attack = attack;
+        this.crit = crit;
+        this.speedAttack = speedAttack;
     }
     int count = 0;
     public void updatee(long gameTime){
@@ -74,6 +81,10 @@ public class Enemy  {
         }
 
 
+    }
+    int drawme =1;
+    public void remove(){
+         drawme = 0;
     }
     public void drawe(Canvas canvas){
         Rect destRect=new Rect((int)x, (int)y, (int)x+ spriteWidth, (int)y+ spriteHeight);

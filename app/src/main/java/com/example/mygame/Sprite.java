@@ -9,7 +9,7 @@ public class Sprite {
     private Bitmap bitmap;// Картинка с анимационной последовательностью
     private Rect sourceRect;// Прямоугольная область в bitmap, которую нужно нарисовать
     private int frameNr;// Число кадров в анимации
-    private int currentFrame;// Текущий кадр
+    int currentFrame;// Текущий кадр
     private long frameTicker;// время обновления последнего кадра
     private int framePeriod;// сколько миллисекунд должно пройти перед сменой кадра (1000/fps)
 
@@ -24,9 +24,9 @@ public class Sprite {
     private float velocityX = 12;
     private float velocityY = 12;
     float corY, corX;
-    int mod; int a =0;
+    public int mod; int a =0; int b = 0;
 
-    public Sprite(Bitmap bitmap, float x, float y, int width, int height, int fps, int frameCount){
+    public Sprite(Bitmap bitmap, float x, float y, int width, int height, int fps, int frameCount, int lines){
         this.bitmap= bitmap;
         this.x= x;
         this.y= y;
@@ -34,11 +34,13 @@ public class Sprite {
         currentFrame=0;
         frameNr= frameCount;
         spriteWidth= bitmap.getWidth()/ frameCount;
-        spriteHeight= bitmap.getHeight()/7;
+        spriteHeight= bitmap.getHeight()/lines;
         sourceRect=new Rect(0,0, spriteWidth, spriteHeight);
         framePeriod=1000/ fps;
         frameTicker= 0l;
-        mod =0;
+        mod = b;
+
+
     }
 
     public void update(long gameTime){
@@ -102,13 +104,13 @@ public class Sprite {
     void moveto(){
         if(corY>=y&&corY<=y+spriteHeight){
             if( corX>=x&&corX<=x+spriteWidth){
-                mod = a;
-            }else {  moveX(); }
-        } else { moveY();}
+                mod = b;
+            }else {  moveX(); mod = a;}
+        } else { moveY(); mod = a;}
 
     }
     void moveX(){
-        if(corX>x) mod = 1; else mod = 2;
+        if(corX>x) a = 1; else a = 2;
         x += vX*velocityX;
         try {
             Thread.sleep(10);
@@ -117,7 +119,7 @@ public class Sprite {
         }
     }
     void moveY(){
-        if(corY>y) mod = 3; else mod = 4;
+        if(corY>y) a = 3; else a = 4;
         y += vY*velocityY;
         try {
             Thread.sleep(10);
@@ -125,10 +127,14 @@ public class Sprite {
             e.printStackTrace();
         }
     }
-    void stop(){
+    void stop(int v){
+        b = v;
+        mod = b;
         corY = y;
         corX = x;
     }
+
+
     public void draw(Canvas canvas){
 
         Rect destRect=new Rect((int)x, (int)y, (int)x+ spriteWidth, (int)y+ spriteHeight);
