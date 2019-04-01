@@ -1,15 +1,12 @@
 package com.example.mygame;
 
 import android.annotation.SuppressLint;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import static com.example.mygame.DrawView.s;
 public class Game extends AppCompatActivity {
 
@@ -24,17 +21,8 @@ public class Game extends AppCompatActivity {
         frame = new FrameLayout(this);
         rel = new RelativeLayout(this);
 
-        Character player = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.character1)
-                , 100, 150, 50, 150, 7, 6, 7);
 
-        TextView health = new TextView(this);
-        int maxhealth = player.getParam("maxheal");
-        int curhealth = player.getParam("curhealth");
-        health.setText("health: "+curhealth+"/100");
-        health.setId(12);
-        RelativeLayout.LayoutParams h = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        h.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        health.setLayoutParams(h);
+
 
         //first button
         Button zero = new Button(this);
@@ -88,7 +76,6 @@ public class Game extends AppCompatActivity {
         rel.addView(zero);
         rel.addView(one);
         rel.addView(two);
-        rel.addView(health);
         frame.addView(j);
         frame.addView(rel);
 
