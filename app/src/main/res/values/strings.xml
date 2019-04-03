@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyGame</string>
+    <string name="play">play</string>
+    <string name="todo">TODO</string>
+    <string name="menu">menu</string>
 
 </resources>

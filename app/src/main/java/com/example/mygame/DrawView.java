@@ -27,36 +27,30 @@ import java.util.List;
      int numberOfEnemy = 3;
      List<Enemy> enemy = new ArrayList();
 
-     Enemy dino1  = new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.dino1),
-             random(), random(),  7, 5, 4, 100, 2, 6, 10, 2);
+
      DrawView(Context context) {
         super(context);
         p = new Paint();
         getHolder().addCallback(this);
     }
+    //маштабирование картинок
+     DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+     int width = displaymetrics.widthPixels;
+     int height = displaymetrics.heightPixels;
+     float coef = (float)(width*height)/(1700*2000);
+
+     Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.room);
+     Bitmap bmHalf = Bitmap.createScaledBitmap(image, width+10, height-100, false);
+
+     Bitmap characterImage = BitmapFactory.decodeResource(getResources(), R.drawable.character);
+     Bitmap character = Bitmap.createScaledBitmap(characterImage, (int)(coef*characterImage.getWidth()), (int)(coef*characterImage.getHeight()), false );
 
 
-    protected void addEnemy(int numberOfEnemy) {
-         int a = 0;
-        if (numberOfEnemy > 0) {
-            for (int i = 0; i < numberOfEnemy; i++) {
-                float x = random(), y = random();
-                //enemy.add(dino1);
-                if(a==0){
-               enemy.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.dino1),
-                        x, y,  7, 5, 4, 100, 2, 6, 10, 2)); a++;}
-                        else {
-                            a--;
-                    enemy.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.dino2),
-                            x, y,  7, 5, 3, 150, 2, 10, 10, 2));
+     Bitmap dinoImage1 = BitmapFactory.decodeResource(getResources(), R.drawable.dino1);
+     Bitmap dino1 = Bitmap.createScaledBitmap(dinoImage1, (int)(coef*dinoImage1.getWidth()), (int)(coef*dinoImage1.getHeight()), false );
 
-                }
-
-            }
-        }
-    }
-    Character player = new Character(BitmapFactory.decodeResource(getResources(), R.drawable.character)
-            , 100, 150,  7, 6, 7, 1000);
+     Bitmap dinoImage2 = BitmapFactory.decodeResource(getResources(), R.drawable.dino2);
+     Bitmap dino2 = Bitmap.createScaledBitmap(dinoImage2, (int)(coef*dinoImage2.getWidth()), (int)(coef*dinoImage2.getHeight()), false );
 
 
     //clothes
@@ -65,13 +59,9 @@ import java.util.List;
     Cloth shirt2 = new Cloth(BitmapFactory.decodeResource(getResources(), R.drawable.shirt2)
             , 100, 150, 50, 150, 7, 6, 1); */
 
+     Character player = new Character(character, 100, 150,  7, 6, 7, 1000);
 
-
-    Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.room);
-    DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
-    int width = displaymetrics.widthPixels;
-    int height = displaymetrics.heightPixels;
-    Bitmap bmHalf = Bitmap.createScaledBitmap(image, width+10, height-100, false);
+     Door door = new Door(0, BitmapFactory.decodeResource(getResources(), R.drawable.door),4,1,width/2, height/2);
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -82,6 +72,7 @@ import java.util.List;
                     if (canvas != null) {
                         try {
                             canvas.drawBitmap(bmHalf, 0, -5,null);
+                           // door.drawObject(canvas);
                             if(s<2) { enemy.clear(); m=0;}else
                             if(s>1){
 
@@ -94,6 +85,7 @@ import java.util.List;
                             player.update(System.currentTimeMillis());
                             onDrawEnemy(canvas);
                             player.draw(canvas);
+
                             drawHealth(canvas);
                         } finally {
                             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -128,6 +120,28 @@ import java.util.List;
         player.setVec(event);
         return super.onTouchEvent(event);
     }
+
+
+     protected void addEnemy(int numberOfEnemy) {
+         int a = 0;
+         if (numberOfEnemy > 0) {
+             for (int i = 0; i < numberOfEnemy; i++) {
+                 float x = (float)Math.random()*(float)Math.random()*width, y = (float)Math.random()*(float)Math.random()*height;
+                 if(width/7>x) x+=(float)width/7;
+                 else if (0.8*width<x) x-=2*(float)width/7;
+                 if(height/12>y) y+=(float)height/12;
+                 else if (11*height/12<x) x-=(float)height/12;
+                 //enemy.add(dino1);
+                 if(a==0){
+                     enemy.add(new Enemy(dino1, x, y,  7, 5, 4, 100, 2, 6, 10, 2)); a++;}
+                 else {
+                     a--;
+                     enemy.add(new Enemy(dino2,x, y,  7, 5, 3, 150, 2, 10, 10, 2));
+                 }
+
+             }
+         }
+     }
     void attackEnemy(Enemy e){
          if (player.x > e.x) {
              player.stop(6);
@@ -144,7 +158,7 @@ import java.util.List;
 
      }
 
-    Enemy attacker;
+        Enemy attacker;
      boolean closeToEnemy( ) {
         Iterator<Enemy> i = enemy.iterator();
         while (i.hasNext()) {
@@ -158,11 +172,6 @@ import java.util.List;
             }
         }return false;
     }
-
-
-    private float random(){
-    return (float)Math.random()*1000;
-}
 
     public void onDrawEnemy(Canvas canvas) {
         Iterator<Enemy> i = enemy.iterator();
@@ -178,6 +187,9 @@ import java.util.List;
             }
         }
     }
+
+
+
     void drawHealth(Canvas canvas){
          float xRect = (float)((player.health/10)*width/600);
         p.setColor(Color.WHITE);

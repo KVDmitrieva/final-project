@@ -3,8 +3,10 @@ package com.example.mygame;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
-    class Sprite {
+class Sprite {
     private Bitmap bitmap;// Картинка с анимационной последовательностью
     private Rect sourceRect;// Прямоугольная область в bitmap, которую нужно нарисовать
     private int frameNr;// Число кадров в анимации
@@ -20,11 +22,11 @@ import android.graphics.Rect;
 
      int mod; int a =0;
 
+
      Sprite(Bitmap bitmap, float x, float y, int fps, int frameCount, int lines){
         this.bitmap= bitmap;
         this.x= x;
         this.y= y;
-
         currentFrame=0;
         frameNr= frameCount;
         spriteWidth= bitmap.getWidth()/ frameCount;
