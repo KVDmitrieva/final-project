@@ -18,6 +18,7 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         j = new DrawView(this);
+
         frame = new FrameLayout(this);
         rel = new RelativeLayout(this);
 
