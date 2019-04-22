@@ -21,6 +21,7 @@ class Hall {
     }
 
     void drawHall(Canvas canvas){
+
         Rect destRect=new Rect(x, y, x+width*size, y+height*size);
         canvas.drawBitmap(bitmap, sourceRect, destRect,null);
     }
