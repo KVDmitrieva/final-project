@@ -2,15 +2,10 @@ package com.example.mygame;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,11 +22,14 @@ public class DrawThread extends Thread {
     int m;
     int numberOfEnemy;
     List<Enemy> enemy;
-
+    Bitmap floor;
     int width , height;
     Character player;
     Door door;
     private Enemy attacker;
+    Map map;
+    int a =0; int size;
+
 
 
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
@@ -46,6 +44,9 @@ public class DrawThread extends Thread {
         m = stat.m;
         numberOfEnemy = stat.numberOfEnemy;
         enemy = stat.enemy;
+        map = stat.map;
+        floor = stat.floor;
+        size = stat.size;
 
     }
 
@@ -57,27 +58,42 @@ public class DrawThread extends Thread {
     public void run() {
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
+
             if (canvas != null) {
                 try {
 
+                    if (s!=1) {
+                        canvas.drawBitmap(stat.bmHalf, 0, -5, null);
+                        // door.drawObject(canvas);
+                        if (s == 0) {
+                            enemy.clear();
+                            m = 0;
+                        }
+                        if (s == 2) {
 
-                    canvas.drawBitmap(stat.bmHalf, 0, -5,null);
-                    // door.drawObject(canvas);
-                    if(s<2) { enemy.clear(); m=0;}else
-                    if(s>1){
+                            if (m == 0) enemy.clear();
+                            if (m < 1) {
+                                addEnemy(numberOfEnemy);
+                                m++;
+                            }
+                        }
+                        if (closeToEnemy()) attackEnemy(attacker);
+                        else
+                            player.moveto();
+                        player.update(System.currentTimeMillis());
+                        onDrawEnemy(canvas);
+                        player.draw(canvas);
 
-                        if(m==0) enemy.clear();
-                        if(m<1){
-                            addEnemy(numberOfEnemy);m++;
-                        }}
-                    if (closeToEnemy()) attackEnemy(attacker); else
-                        player.moveto();
-                    player.update(System.currentTimeMillis());
-                    onDrawEnemy(canvas);
-                    player.draw(canvas);
-
-                    drawHealth(canvas);
-
+                        drawHealth(canvas);
+                    } else if (s == 1) {
+                        canvas.drawColor(Color.BLACK);
+                        if (a == 0) {
+                            map.generate(15);
+                            a++;
+                        }
+                        p.setColor(Color.YELLOW);
+                        map.drawMap(canvas);
+                    }
 
 
                 } finally {

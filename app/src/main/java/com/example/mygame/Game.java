@@ -24,13 +24,13 @@ public class Game extends AppCompatActivity {
 
 
 
-
+        s=0;
         //first button
         Button zero = new Button(this);
         zero.setText("0");
         zero.setId(0);
         RelativeLayout.LayoutParams b1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        b1.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        b1.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         zero.setLayoutParams(b1);
 
         zero.setOnClickListener(new View.OnClickListener() {

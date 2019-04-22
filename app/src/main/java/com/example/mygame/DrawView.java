@@ -44,6 +44,7 @@ import android.view.SurfaceView;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+         drawThread.a = 0;
         float a = event.getX();
         if (drawThread.width/7>a ) event.setLocation((float)drawThread.width/7, event.getY()); else
             if(a>drawThread.width*0.8) event.setLocation((float)4*drawThread.width/5, event.getY());

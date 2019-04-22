@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 
     private float vX = 0;
     private float vY = 0;
-    private float velocity = 12;
+    private float velocity = 7;
     private float corY, corX;
 
 
