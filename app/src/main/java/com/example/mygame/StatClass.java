@@ -42,7 +42,7 @@ public class StatClass {
         height = display.getHeight();
         //coef = (float) (width * height) / (1700 * 900);
         coef = (float) (width * height) / (1500 * 2700);
-        size = width/20;
+        size = width/30;
 
         image = BitmapFactory.decodeResource(context.getResources(), R.drawable.room);
         bmHalf = Bitmap.createScaledBitmap(image, width + 10, height - 100, false);
