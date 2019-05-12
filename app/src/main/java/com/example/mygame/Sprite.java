@@ -3,8 +3,6 @@ package com.example.mygame;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 class Sprite {
     private Bitmap bitmap;// Картинка с анимационной последовательностью
@@ -20,17 +18,18 @@ class Sprite {
     float x;
     float y;
 
-     int mod; int a =0;
+     int mod;
 
 
      Sprite(Bitmap bitmap, float x, float y, int fps, int frameCount, int lines){
         this.bitmap= bitmap;
-        this.x= x;
-        this.y= y;
+
         currentFrame=0;
         frameNr= frameCount;
         spriteWidth= bitmap.getWidth()/ frameCount;
         spriteHeight= bitmap.getHeight()/lines;
+         this.x= x-(float)spriteWidth/2;
+         this.y= y-(float)spriteHeight/2;
         sourceRect=new Rect(0,0, spriteWidth, spriteHeight);
         framePeriod=1000/ fps;
         frameTicker= 01;
@@ -39,7 +38,7 @@ class Sprite {
     }
 
 
-    public void update(long gameTime){
+     void update(long gameTime){
         if(gameTime> frameTicker+ framePeriod){
             frameTicker = gameTime;
             currentFrame++;
@@ -54,9 +53,10 @@ class Sprite {
 
     }
 
-    public void draw(Canvas canvas){
+     void draw(Canvas canvas){
         Rect destRect=new Rect((int)x, (int)y, (int)x+ spriteWidth, (int)y+ spriteHeight);
         canvas.drawBitmap(bitmap, sourceRect, destRect,null);
+        update(System.currentTimeMillis());
 
     }
 }

@@ -9,25 +9,18 @@ import android.graphics.Rect;
 class Door {
     int idOfRoom;
     Bitmap image;
-    int spriteWidth, spriteHeight;
-    float x,y;
+    int size;
+    int x,y;
     Rect sourceRect;
-    Door(int idOfRoom, Bitmap image, int count, int lines,float x, float y ){
+    Door(int idOfRoom, Bitmap image,int x, int y, int size ){
         this.x = x;
         this.y = y;
         this.idOfRoom = idOfRoom;
         this.image = image;
-        spriteWidth = image.getWidth() / count;
-        spriteHeight = image.getHeight() / lines;
-        sourceRect = new Rect(0,0, spriteWidth, spriteHeight);
-
+        this.size = size;
     }
     void drawObject(Canvas canvas){
-        this.sourceRect.left= idOfRoom* spriteWidth;
-        this.sourceRect.right= this.sourceRect.left+ spriteWidth;
-        this.sourceRect.bottom = spriteHeight;
-        this.sourceRect.top = 0;
-        Rect destRect=new Rect((int)x, (int)y, (int)x+ spriteWidth, (int)y+ spriteHeight);
+        Rect destRect=new Rect(x, y, x+size, y+size);
         canvas.drawBitmap(image, sourceRect, destRect,null);
     }
 

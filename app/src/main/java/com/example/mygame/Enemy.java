@@ -15,16 +15,17 @@ import android.graphics.Rect;
     int spriteWidth;
     int spriteHeight;
 
-    float x;
-    float y;
+
     int mod = 0;
     private int lines;
-     int health, attack; private int def,crit, speedAttack;
+     int health, attack;
+      int def,crit, speedAttack;
+
      Enemy(Bitmap bitmap, float x, float y, int fps, int frameCount,int lines,int health, int def, int attack, int crit, int speedAttack){
         super(bitmap, x, y,  fps, frameCount, lines);
         this.bitmap= bitmap;
-        this.x= x;
-        this.y= y;
+        //this.x= x;
+       // this.y= y;
         this.lines = lines;
         currentFrame=0;
         frameNr= frameCount;
