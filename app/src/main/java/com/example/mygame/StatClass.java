@@ -4,12 +4,10 @@ package com.example.mygame;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
 
 class StatClass {
 
@@ -27,12 +25,13 @@ class StatClass {
         Bitmap  dino1Image, dino2Image, floor;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        //DisplayMetrics displaymetrics;
-        //displaymetrics = context.getResources().getDisplayMetrics();
-       // width = displaymetrics.widthPixels;
-       // height = displaymetrics.heightPixels;
-        width = display.getWidth();
-        height = display.getHeight();
+        DisplayMetrics displaymetrics;
+        displaymetrics = context.getResources().getDisplayMetrics();
+        width = displaymetrics.widthPixels;
+        height = displaymetrics.heightPixels;
+
+        //width = display.getWidth();
+        //height = display.getHeight();
         //coef = (float) (width * height) / (1700 * 900);
         coef = 1.5f*((float) (width * height) / (1500 * 2700));
         size = width/5;

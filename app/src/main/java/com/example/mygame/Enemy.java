@@ -16,10 +16,10 @@ import android.graphics.Rect;
     int spriteHeight;
 
 
-    int mod = 0;
-    private int lines;
+     int mod = 0;
+     private int lines;
      int health, attack;
-      int def,crit, speedAttack;
+     int def,crit, speedAttack;
 
      Enemy(Bitmap bitmap, float x, float y, int fps, int frameCount,int lines,int health, int def, int attack, int crit, int speedAttack){
         super(bitmap, x, y,  fps, frameCount, lines);

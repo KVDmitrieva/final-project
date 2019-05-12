@@ -46,11 +46,9 @@ class DrawView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
-    int k, c;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        k = (int)event.getX();
-        c = (int)event.getY();
 
         return super.onTouchEvent(event);
     }

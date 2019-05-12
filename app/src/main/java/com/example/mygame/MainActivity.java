@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import static com.example.mygame.DrawThread.dungeon;
+import static com.example.mygame.DrawThread.enemies;
+
 
 public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Button zero = new Button(this);
         zero.setId(12);
         zero.setBackgroundResource(R.drawable.but);
-        zero.setText("play");
+        zero.setText(R.string.play);
         zero.setTextSize(15);
         zero.setTextColor(Color.WHITE);
         RelativeLayout.LayoutParams b1;
@@ -61,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             @RequiresApi(api = Build.VERSION_CODES.M)
             public void onClick(View v){
+                //enemies = 0;
+               // dungeon = 0;
                 Intent i = new Intent(MainActivity.this, Game.class);
                 startActivity(i);
             }

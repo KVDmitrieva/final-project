@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "772003852977",
+    "firebase_url": "https://through-the-ages-1940b.firebaseio.com",
+    "project_id": "through-the-ages-1940b",
+    "storage_bucket": "through-the-ages-1940b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772003852977:android:66e1368308039e92",
+        "android_client_info": {
+          "package_name": "com.example.mygame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772003852977-mp1ji6namqcoheb6qsrrhdulmc6pqlcs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mygame",
+            "certificate_hash": "73202e112ff1cfbd6c446b382c313032ee9d3780"
+          }
+        },
+        {
+          "client_id": "772003852977-kr7ljufucasvvbqnk5f2kped6736oq3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1Kls186x9glud4PT79VP2sIA2gF2Hv8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772003852977-kr7ljufucasvvbqnk5f2kped6736oq3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

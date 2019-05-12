@@ -24,6 +24,8 @@ import static com.example.mygame.DrawView.s;
 
 import com.erz.joysticklibrary.JoyStick;
 import com.erz.joysticklibrary.JoyStick.JoyStickListener;
+
+
 public class Game extends AppCompatActivity implements JoyStickListener{
     Button zero;
     DrawView j;
@@ -39,6 +41,14 @@ public class Game extends AppCompatActivity implements JoyStickListener{
         getSupportActionBar().hide();
 
         context = this;
+
+
+
+       // FirebaseDatabase database = FirebaseDatabase.getInstance();
+       // DatabaseReference myRef = database.getReference("message");
+
+       // myRef.setValue("Hello, World!");
+
 
         StatClass stat = new StatClass(this);
         frame = new FrameLayout(this);
@@ -111,9 +121,9 @@ public class Game extends AppCompatActivity implements JoyStickListener{
         joystick2.setListener(this);
         joystick2.setType(JoyStick.TYPE_4_AXIS);
 
-        String message = "Do you want to go to the next floor?";
-        String button1String = "Yes";
-        String button2String = "No";
+        String message = getString(R.string.mess);
+        String button1String = getString(R.string.y);
+        String button2String = getString(R.string.n);
 
         ad = new AlertDialog.Builder(context);
         ad.setMessage(message);
@@ -153,6 +163,7 @@ public class Game extends AppCompatActivity implements JoyStickListener{
     @Override
     public void onMove(JoyStick joyStick, double angle, double power, int direction) {
         joyStick.setButtonColor(Color.parseColor("#55ffffff"));
+        //joyStick.setButtonColor(getColor(R.color.joystick));
         dir = joyStick.getDirection();
         if (dir==-1) joyStick.setButtonColor(Color.TRANSPARENT);
         if(intersect==1){

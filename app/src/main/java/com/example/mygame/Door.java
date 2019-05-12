@@ -7,11 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 class Door {
-    int idOfRoom;
-    Bitmap image;
+    private int idOfRoom;
+    private Bitmap image;
     int size;
     int x,y;
-    Rect sourceRect;
+    private Rect sourceRect;
     Door(int idOfRoom, Bitmap image,int x, int y, int size ){
         this.x = x;
         this.y = y;
