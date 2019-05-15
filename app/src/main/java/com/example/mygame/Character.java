@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.view.MotionEvent;
 
     class Character extends Sprite{
-       int health,  attack = 5; //int crit = 7, speedAttack = 2, def = 5;
+       int health,  attack = 5; int crit = 7, speedAttack = 2, def = 5;
 
     private float vX = 0;
     private float vY = 0;

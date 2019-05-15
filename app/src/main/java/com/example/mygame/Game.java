@@ -11,19 +11,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import static com.example.mygame.DrawThread.a;
 import static com.example.mygame.DrawThread.canceled;
 import static com.example.mygame.DrawThread.dir;
+import static com.example.mygame.DrawThread.dungeon;
+import static com.example.mygame.DrawThread.enemies;
 import static com.example.mygame.DrawThread.intersect;
-import static com.example.mygame.DrawView.s;
+
 
 import com.erz.joysticklibrary.JoyStick;
 import com.erz.joysticklibrary.JoyStick.JoyStickListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class Game extends AppCompatActivity implements JoyStickListener{
@@ -34,6 +36,8 @@ public class Game extends AppCompatActivity implements JoyStickListener{
     Context context;
     AlertDialog.Builder ad;
     AlertDialog adTrueDialog;
+    FirebaseDatabase db;
+    DatabaseReference ref, level;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +46,10 @@ public class Game extends AppCompatActivity implements JoyStickListener{
 
         context = this;
 
+           // db = FirebaseDatabase.getInstance();
+           // ref = db.getReference("enemies");
+           //// level = db.getReference("level");
 
-
-       // FirebaseDatabase database = FirebaseDatabase.getInstance();
-       // DatabaseReference myRef = database.getReference("message");
-
-       // myRef.setValue("Hello, World!");
 
 
         StatClass stat = new StatClass(this);
@@ -88,6 +90,9 @@ public class Game extends AppCompatActivity implements JoyStickListener{
         zero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+               // ref.push().setValue(enemies);
+                //level.push().setValue(dungeon);
                 Intent i = new Intent(Game.this,MainActivity.class);
                 startActivity(i);
             }
@@ -127,6 +132,8 @@ public class Game extends AppCompatActivity implements JoyStickListener{
 
         ad = new AlertDialog.Builder(context);
         ad.setMessage(message);
+
+
 
         ad.setNegativeButton(button2String, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {

@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             @RequiresApi(api = Build.VERSION_CODES.M)
             public void onClick(View v){
-                //enemies = 0;
-               // dungeon = 0;
+                enemies = 0;
+                dungeon = 0;
                 Intent i = new Intent(MainActivity.this, Game.class);
                 startActivity(i);
             }

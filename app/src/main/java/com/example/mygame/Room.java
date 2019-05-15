@@ -140,10 +140,10 @@ import java.util.List;
 
             if(noneIntersect){
             if (Math.random()*100<50) {
-                enemies.add( new Enemy(d1, xS,yS,7, 5, 4, 100, 2, 6, 10, 2));
+                enemies.add( new Enemy(d1, xS,yS,7, 5, 4, 100, 2, 10, 10, 1));
             }
             else
-                enemies.add(new Enemy(d2,xS,yS,7, 5, 3, 150, 2, 10, 10, 2));
+                enemies.add(new Enemy(d2,xS,yS,7, 5, 3, 150, 2, 15, 10, 2));
 
         }}}
 

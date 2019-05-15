@@ -9,11 +9,14 @@ import android.view.SurfaceHolder;
 
 import java.util.Iterator;
 
+import static com.example.mygame.StatClass.score;
+
 public class DrawThread extends Thread {
 
     private SurfaceHolder surfaceHolder;
 
     private volatile boolean running = true;
+
 
     static int dir = -1;
     static int a = 0;
@@ -32,15 +35,18 @@ public class DrawThread extends Thread {
     private int velocityX , velocityY;
     private Bitmap gameover;
     private Bitmap level;
+    private StatClass stat;
 
      DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
-        StatClass stat= new StatClass(context);
+         stat= new StatClass(context);
         p = new Paint();
-        player = stat.player;
+       player = stat.player;
         width = stat.width;
         height = stat.height;
         map = stat.map;
+         //this.player = player;
+         //this.map = map;
         gameover = stat.gameover;
         level = stat.door;
     }
@@ -57,36 +63,6 @@ public class DrawThread extends Thread {
 
             if (canvas != null) {
                 try {
-                    /*
-                    canvas.drawColor(Color.BLACK);
-                        if (a == 0) {
-                            map.generate(5);
-                            createDoor();
-                            a++;
-
-                        }
-                        if(checkHealth()){
-                           if(!intersectDoor()||canceled){
-                               intersect = 0;
-                               if(!intersectDoor())canceled =false;
-                        if(!closeToWall()&&!closeToEnemy()) checkDir(dir);
-                        else if(closeToEnemy())attackEnemy(attacker);
-
-                        }else{intersect = 1; player.mod=0;}
-
-                           // player.update(System.currentTimeMillis());
-                            map.drawMap(canvas);
-                            door.drawObject(canvas);
-                            onDrawEnemy(canvas);
-                            player.draw(canvas);
-                            drawHealth(canvas);
-
-                        }
-
-                        else {canvas.drawColor(Color.BLACK);
-                        canvas.drawBitmap(gameover, (float)(width/2-gameover.getWidth()/2),(float)(height/2-gameover.getHeight()/2),null);
-                        }
-                            */
                     tick();
                     render(canvas);
 
@@ -96,6 +72,9 @@ public class DrawThread extends Thread {
             }
         }
     }
+    private boolean health = false, attack = false, def = false;
+     int fpsH = 0, fpsA = 0, fpsD = 0;
+     int xStat=0, yStat=0;
 
     private void tick(){
         if (a == 0) {
@@ -121,9 +100,39 @@ public class DrawThread extends Thread {
         door.drawObject(canvas);
         onDrawEnemy(canvas);
         player.draw(canvas);
+        if(health){
+            canvas.drawBitmap(stat.health, xStat, yStat,null);
+            fpsH++;
+            if(fpsH==5){
+                health = false;
+                fpsH = 0;
+            }
+        }
+        if(attack){
+            canvas.drawBitmap(stat.attack, xStat, yStat,null);
+            fpsA++;
+            if(fpsA==5){
+                attack = false;
+                fpsA = 0;
+            }
+        }
+        if(def){
+            canvas.drawBitmap(stat.def, xStat, yStat,null);
+            fpsD++;
+            if(fpsD==5){
+                def = false;
+                fpsD = 0;
+            }
+        }
+
+
         drawHealth(canvas);}
          else{canvas.drawColor(Color.BLACK);
              canvas.drawBitmap(gameover, (float)(width/2-gameover.getWidth()/2),(float)(height/2-gameover.getHeight()/2),null);
+             String finalScore = "Your score is "+ String.valueOf(score);
+             Paint p = new Paint();p.setColor(Color.WHITE);  p.setTextSize((float)(width/20));
+             canvas.drawText(finalScore, (float)(width/2-gameover.getWidth()/4), (float)(height/2+2*gameover.getHeight()/3), p);
+
          }
     }
 
@@ -140,7 +149,7 @@ public class DrawThread extends Thread {
         if (e.currentFrame == 2){
             e.health = e.health - player.attack;}
         if(player.currentFrame ==3 )
-            player.health = player.health - e.attack;
+            player.health = player.health - (int)(e.attack*(1-0.01f*player.def));
 
     }
 
@@ -169,11 +178,32 @@ public class DrawThread extends Thread {
                     e.updates(System.currentTimeMillis());
 
                 } else {
+                    destroyEnemy(e);
                     i.remove();
                     enemies++;
                 }
             }
         }
+    }
+
+    void destroyEnemy(Enemy e){
+         score +=e.id*100;
+         xStat = (int)e.x;
+         yStat = (int)e.y;
+
+         int rand = (int)(Math.random()*100);
+         if(rand>=10&&rand<=30){
+             player.health+=100;
+             health = true;
+         } else if(rand>=40&&rand<=60){
+             player.def+=1;
+             def = true;
+         } else if(rand>=70&&rand<=90){
+             player.attack+=5;
+             attack = true;
+         }
+
+
     }
 
     private void drawHealth(Canvas canvas){

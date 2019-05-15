@@ -19,9 +19,9 @@ import android.graphics.Rect;
      int mod = 0;
      private int lines;
      int health, attack;
-     int def,crit, speedAttack;
+     int def,crit, id;
 
-     Enemy(Bitmap bitmap, float x, float y, int fps, int frameCount,int lines,int health, int def, int attack, int crit, int speedAttack){
+     Enemy(Bitmap bitmap, float x, float y, int fps, int frameCount,int lines,int health, int def, int attack, int crit, int id){
         super(bitmap, x, y,  fps, frameCount, lines);
         this.bitmap= bitmap;
         //this.x= x;
@@ -40,7 +40,7 @@ import android.graphics.Rect;
         this.def = def;
         this.attack = attack;
         this.crit = crit;
-        this.speedAttack = speedAttack;
+        this.id = id;
     }
     private int count = 0;
      void updates(long gameTime){
