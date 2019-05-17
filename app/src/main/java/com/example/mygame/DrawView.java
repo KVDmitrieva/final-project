@@ -8,30 +8,26 @@ import android.view.SurfaceView;
 
 class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
-     public static int s;
-     private DrawThread drawThread;
-
-     private StatClass stat;
-     Character player;
-     Map map;
-
-
-
+     private DrawThread d;
+    Map map; Character player; Door door;
      DrawView(Context context) {
         super(context);
         getHolder().addCallback(this);
-        stat = new StatClass(context);
+        StatClass stat = new StatClass(getContext());
         map = stat.map;
         player = stat.player;
+        door = stat.doord;
+
+
 
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
-        drawThread = new DrawThread(getContext(),getHolder());
-       drawThread.start();
+        d = new DrawThread(getContext(), getHolder());
 
+        d.start();
 
     }
 
@@ -42,13 +38,13 @@ class DrawView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-       drawThread.requestStop();
-
+       d.requestStop();
+       // g.requestStop();
         boolean retry = true;
         while (retry) {
             try {
-                drawThread.join();
-
+                d.join();
+               // gameThread.join();
                 retry = false;
             } catch (InterruptedException e) {
 

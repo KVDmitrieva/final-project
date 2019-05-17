@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Game"></activity>
+        <activity android:name=".Statistic"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

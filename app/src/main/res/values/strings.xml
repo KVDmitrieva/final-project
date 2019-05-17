@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">MyGame</string>
     <string name="play">play</string>
+    <string name="stat">statistic</string>
     <string name="todo">TODO</string>
     <string name="menu">menu</string>
     <string name="mess">Do you want to go to the next floor?</string>
     <string name="y">yes</string>
     <string name="n">no</string>
+    <string name="score">  high score</string>
+    <string name="level">  max level</string>
+    <string name="enemies">  enemies</string>
     <string name="color">#55ffffff</string>
+    <string name="back">back</string>
 
 
 </resources>

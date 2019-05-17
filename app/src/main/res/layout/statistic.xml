@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Statistic">
+
+    <ImageView
+        android:id="@+id/main1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:alpha="1"
+        android:contentDescription="@string/menu"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/main1" />
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="0dp"
+        android:layout_height="416dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:layout_weight="0.005"
+            android:contentDescription="@string/score"
+            app:srcCompat="@drawable/score" />
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/score"
+            android:textColor="@android:color/background_dark"
+            android:textColorHighlight="@android:color/background_dark"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/level"
+            android:textColor="@android:color/background_dark"
+            android:textColorHighlight="@android:color/background_dark"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/enemies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:fontFamily="sans-serif-black"
+            android:text="@string/enemies"
+            android:textColor="@android:color/background_dark"
+            android:textColorHighlight="@android:color/background_dark"
+            android:textSize="36sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/but"
+        android:text="@string/back"
+        android:textColor="@android:color/background_light"
+        android:textColorHighlight="@android:color/background_dark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

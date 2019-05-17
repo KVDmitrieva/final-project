@@ -1,5 +1,6 @@
 package com.example.mygame;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -37,26 +38,26 @@ public class DrawThread extends Thread {
     private Bitmap level;
     private StatClass stat;
 
-     DrawThread(Context context, SurfaceHolder surfaceHolder) {
+    DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
-         stat= new StatClass(context);
+        stat= new StatClass(context);
         p = new Paint();
-       player = stat.player;
+        player = stat.player;
         width = stat.width;
         height = stat.height;
         map = stat.map;
-         //this.player = player;
-         //this.map = map;
+        //this.player = player;
+        //this.map = map;
         gameover = stat.gameover;
         level = stat.door;
     }
 
-     void requestStop() {
+    void requestStop() {
         running = false;
     }
 
 
-   @Override
+    @Override
     public void run() {
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
@@ -73,8 +74,8 @@ public class DrawThread extends Thread {
         }
     }
     private boolean health = false, attack = false, def = false;
-     int fpsH = 0, fpsA = 0, fpsD = 0;
-     int xStat=0, yStat=0;
+    int fpsH = 0, fpsA = 0, fpsD = 0;
+    int xStat=0, yStat=0;
 
     private void tick(){
         if (a == 0) {
@@ -83,57 +84,68 @@ public class DrawThread extends Thread {
             a++;
             dungeon++;
         }
-         if(player.health>0){
-        if(!intersectDoor()||canceled){
-            intersect = 0;
-            if(!intersectDoor())canceled =false;
-            if(!closeToWall()&&!closeToEnemy()) checkDir(dir);
-            else if(closeToEnemy())attackEnemy(attacker);
+        if(player.health>0){
+            int idRoom = checkRoom();
+            if(!intersectDoor()||canceled){
+                intersect = 0;
+                if(!intersectDoor())canceled =false;
+                if(!closeToWall()&&!closeToEnemy(idRoom)) checkDir(dir);
+                else if(closeToEnemy(idRoom))attackEnemy(attacker);
 
-        }else{intersect = 1; player.mod=0;}}
+            }else{intersect = 1; player.mod=0;}}
+    }
+
+
+    private int checkRoom(){
+        int a = 0;
+        for(Room r:map.map_room){
+            if(player.x>=r.x&&player.x<=r.x+r.width*r.size&&player.y>=r.y&&player.y<=r.y+r.height*r.size){
+                return a;
+            } else a++;
+        }return a;
     }
 
     private void render(Canvas canvas){
         canvas.drawColor(Color.BLACK);
-         if(player.health>0){
-        map.drawMap(canvas);
-        door.drawObject(canvas);
-        onDrawEnemy(canvas);
-        player.draw(canvas);
-        if(health){
-            canvas.drawBitmap(stat.health, xStat, yStat,null);
-            fpsH++;
-            if(fpsH==5){
-                health = false;
-                fpsH = 0;
+        if(player.health>0){
+            map.drawMap(canvas);
+            door.drawObject(canvas);
+            onDrawEnemy(canvas);
+            player.draw(canvas);
+            if(health){
+                canvas.drawBitmap(stat.health, xStat, yStat,null);
+                fpsH++;
+                if(fpsH==5){
+                    health = false;
+                    fpsH = 0;
+                }
             }
-        }
-        if(attack){
-            canvas.drawBitmap(stat.attack, xStat, yStat,null);
-            fpsA++;
-            if(fpsA==5){
-                attack = false;
-                fpsA = 0;
+            if(attack){
+                canvas.drawBitmap(stat.attack, xStat, yStat,null);
+                fpsA++;
+                if(fpsA==5){
+                    attack = false;
+                    fpsA = 0;
+                }
             }
-        }
-        if(def){
-            canvas.drawBitmap(stat.def, xStat, yStat,null);
-            fpsD++;
-            if(fpsD==5){
-                def = false;
-                fpsD = 0;
+            if(def){
+                canvas.drawBitmap(stat.def, xStat, yStat,null);
+                fpsD++;
+                if(fpsD==5){
+                    def = false;
+                    fpsD = 0;
+                }
             }
-        }
 
 
-        drawHealth(canvas);}
-         else{canvas.drawColor(Color.BLACK);
-             canvas.drawBitmap(gameover, (float)(width/2-gameover.getWidth()/2),(float)(height/2-gameover.getHeight()/2),null);
-             String finalScore = "Your score is "+ String.valueOf(score);
-             Paint p = new Paint();p.setColor(Color.WHITE);  p.setTextSize((float)(width/20));
-             canvas.drawText(finalScore, (float)(width/2-gameover.getWidth()/4), (float)(height/2+2*gameover.getHeight()/3), p);
+            drawHealth(canvas);}
+        else{canvas.drawColor(Color.BLACK);
+            canvas.drawBitmap(gameover, (float)(width/2-gameover.getWidth()/2),(float)(height/2-gameover.getHeight()/2),null);
+            String finalScore = "Your score is "+ String.valueOf(score);
+            Paint p = new Paint();p.setColor(Color.WHITE);  p.setTextSize((float)(width/20));
+            canvas.drawText(finalScore, (float)(width/2-gameover.getWidth()/4), (float)(height/2+2*gameover.getHeight()/3), p);
 
-         }
+        }
     }
 
 
@@ -153,8 +165,8 @@ public class DrawThread extends Thread {
 
     }
 
-    private boolean closeToEnemy( ) {
-        for(Room r: map.map_room){
+    private boolean closeToEnemy( int idRoom) {
+        Room r = map.map_room.get(idRoom);
         Iterator<Enemy> i = r.enemies.iterator();
         while (i.hasNext()) {
             Enemy e = i.next();
@@ -165,7 +177,7 @@ public class DrawThread extends Thread {
                 attacker = e;
                 return true;
             }
-        }}return false;
+        }return false;
     }
 
     private void onDrawEnemy(Canvas canvas) {
@@ -187,21 +199,21 @@ public class DrawThread extends Thread {
     }
 
     void destroyEnemy(Enemy e){
-         score +=e.id*100;
-         xStat = (int)e.x;
-         yStat = (int)e.y;
+        score +=e.id*10;
+        xStat = (int)e.x;
+        yStat = (int)e.y;
 
-         int rand = (int)(Math.random()*100);
-         if(rand>=10&&rand<=30){
-             player.health+=100;
-             health = true;
-         } else if(rand>=40&&rand<=60){
-             player.def+=1;
-             def = true;
-         } else if(rand>=70&&rand<=90){
-             player.attack+=5;
-             attack = true;
-         }
+        int rand = (int)(Math.random()*100);
+        if(rand>=10&&rand<=30){
+            player.health+=100;
+            health = true;
+        } else if(rand>=40&&rand<=60){
+            player.def+=1;
+            def = true;
+        } else if(rand>=70&&rand<=90){
+            player.attack+=5;
+            attack = true;
+        }
 
 
     }
@@ -216,7 +228,7 @@ public class DrawThread extends Thread {
     }
 
     private void checkDir(int dir){
-         int velocity = 7;
+        int velocity = 7;
         if(dir==0){
             velocityX = velocity;
             player.mod = 2;
@@ -237,32 +249,33 @@ public class DrawThread extends Thread {
     }
 
     private boolean closeToWall(){
-         boolean closeTo = false, oneMore = false;
-         float x1 = player.x, x2 = player.x+player.spriteWidth,
-                 y1 = player.y+(float)player.spriteHeight/4, y2 = player.y+player.spriteHeight;
-         for(Wall w:map.map_walls) {
-             if(dir==0){
-                 if(x1-5>=w.x1&&x1-5<=w.x2&&(y1<=w.y2&&y1>=w.y1|| y2>=w.y1&&y2<=w.y2))
-                        oneMore = true;
-             } else if (dir==2){
-                 if(y1-5>=w.y1&&y1-5<=w.y2&&(x1<=w.x2&&x1>=w.x1||x2<=w.x2&&x2>=w.x1))
-                     oneMore = true;
+        boolean closeTo = false, oneMore = false;
+        float x1 = player.x, x2 = player.x+player.spriteWidth,
+                y1 = player.y+(float)player.spriteHeight/4, y2 = player.y+player.spriteHeight;
 
-             } else if(dir==4){
-                 if(x2+5>=w.x1&&x2+5<=w.x2&&(y1<=w.y2&&y1>=w.y1|| y2>=w.y1&&y2<=w.y2))
-                     oneMore = true;
+        for(Wall w:map.map_walls) {
+            if(dir==0){
+                if(x1-5>=w.x1&&x1-5<=w.x2&&(y1<=w.y2&&y1>=w.y1|| y2>=w.y1&&y2<=w.y2))
+                    oneMore = true;
+            } else if (dir==2){
+                if(y1-5>=w.y1&&y1-5<=w.y2&&(x1<=w.x2&&x1>=w.x1||x2<=w.x2&&x2>=w.x1))
+                    oneMore = true;
 
-             } else if(dir==6){
-                 if(y2+5>=w.y1&&y2+5<=w.y2&&(x1<=w.x2&&x1>=w.x1||x2<=w.x2&&x2>=w.x1))
-                     oneMore = true;
+            } else if(dir==4){
+                if(x2+5>=w.x1&&x2+5<=w.x2&&(y1<=w.y2&&y1>=w.y1|| y2>=w.y1&&y2<=w.y2))
+                    oneMore = true;
 
-             }
-             if(oneMore){
-                 closeTo = true;
-                 player.mod = 0;}
-             }
+            } else if(dir==6){
+                if(y2+5>=w.y1&&y2+5<=w.y2&&(x1<=w.x2&&x1>=w.x1||x2<=w.x2&&x2>=w.x1))
+                    oneMore = true;
 
-         return closeTo;
+            }
+            if(oneMore){
+                closeTo = true;
+                player.mod = 0;}
+        }
+
+        return closeTo;
     }
 
     private void moveRoomX(){
@@ -283,7 +296,7 @@ public class DrawThread extends Thread {
     private void moveRoomY(){
         for(Room r:map.map_room){
             r.y += velocityY;
-           r.moveEnemiesY(velocityY);
+            r.moveEnemiesY(velocityY);
             for(Hall h:r.room_hall){
                 h.y+= velocityY;
             }
@@ -295,11 +308,12 @@ public class DrawThread extends Thread {
     }
 
     private void createDoor(){
-         int idOfRoom = (int)(Math.random()*100)%map.map_room.size();
-         Room r = map.map_room.get(idOfRoom);
-         int x = r.x+((int)(Math.random()*100)%r.width)*r.size;
-         int y = r.y+((int)(Math.random()*100)%r.height)*r.size;
-         door = new Door(idOfRoom, level,x,y, r.size);
+        int idOfRoom = (int)(Math.random()*100)%map.map_room.size();
+        Room r = map.map_room.get(idOfRoom);
+        int x = r.x+((int)(Math.random()*100)%r.width)*r.size;
+        int y = r.y+((int)(Math.random()*100)%r.height)*r.size;
+        door.x = x;
+        door.y = y;
         Iterator<Enemy> i = r.enemies.iterator();
         while (i.hasNext()) {
             Enemy enemy = i.next();
@@ -312,21 +326,21 @@ public class DrawThread extends Thread {
     }
 
     private boolean intersectDoor(){
-         int px1 = (int)player.x;
-         int px2 = (int)player.x+player.spriteWidth;
-         int py1 = (int)player.y;
-         int py2 = (int)player.y+player.spriteHeight;
+        int px1 = (int)player.x;
+        int px2 = (int)player.x+player.spriteWidth;
+        int py1 = (int)player.y;
+        int py2 = (int)player.y+player.spriteHeight;
 
-         int dx1 = door.x;
-         int dx2 = door.x+door.size;
-         int dy1 = door.y;
-         int dy2 = door.y+door.size;
+        int dx1 = door.x;
+        int dx2 = door.x+door.size;
+        int dy1 = door.y;
+        int dy2 = door.y+door.size;
 
-         if(px1>dx1&&px1<dx2||px2>dx1&&px2<dx2){
-             if(py1>dy1&&py1<dy2||py2>dy1&&py2<dy2){
-                 return true;
-             }
-         }
+        if(px1>dx1&&px1<dx2||px2>dx1&&px2<dx2){
+            if(py1>dy1&&py1<dy2||py2>dy1&&py2<dy2){
+                return true;
+            }
+        }
 
 
         return false;
